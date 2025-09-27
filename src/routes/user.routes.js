@@ -7,8 +7,7 @@ import {loginUser, logOutUser, registerUser,refreshAccessToken,
 import {upload} from '../middlewares/multer.middleware.js'
 import { verifyJWT } from "../middlewares/auth.middlewares.js";
 
-
-const router=Router()
+const router=Router(); 
 
 
 router.route('/register').post(

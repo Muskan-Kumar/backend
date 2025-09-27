@@ -8,8 +8,8 @@ import jwt from "jsonwebtoken"
 const generateAccessAndRefreshToken=async (userId)=>{
     try {
         const user= await User.findOne(userId)
-        const AccessToken=await user.generateAccessToken()
-        const RefreshToken=await user.generateRefreshToken()
+        const AccessToken= user.generateAccessToken()
+        const RefreshToken= user.generateRefreshToken()
 
         user.refreshToken=RefreshToken;
         user.save({validateBeforeSave:false})
@@ -45,7 +45,7 @@ const registerUser=asyncHandler(async (req,res)=>{
         $or: [{username},{email}]
     })
 
-    if(!existedUser){
+    if(existedUser){
         throw new apiError(409,"User with email or username already exists")
     }
 
@@ -58,7 +58,7 @@ const registerUser=asyncHandler(async (req,res)=>{
     if(req.files && Array.isArray(req.files.coverImage) && req.files.coverImage.length>0){
         coverImageLocalPath=req.files.coverImage[0].path
     }
-
+ 
     if(!avatarLocalPath){
         throw new apiError(400,"Avatar file is required")
     }
@@ -66,7 +66,7 @@ const registerUser=asyncHandler(async (req,res)=>{
     const avatar=await uploadOnCloudinary(avatarLocalPath);
     const coverImage=await uploadOnCloudinary(coverImageLocalPath);
 
-    if(!avatar){
+    if(!avatar){ 
         throw new apiError(400,"Avatar file is required")
     }
 
@@ -131,7 +131,7 @@ const loginUser=asyncHandler(async(req,res)=>{
     .json(
         new apiResponse(
             200,
-            {loggedInUser,accessToken,refreshToken},
+            {user: loggedInUser,accessToken,refreshToken},
             "user logged in successfully"
         )
     )
@@ -276,12 +276,12 @@ const updateUserAvatar=asyncHandler(async (req,res)=>{
 
 
     //delete file   ->isme (public_id) v set krna h
-    const a=await User.findById(req.user?._id)
-    const old=a.avatar.url
-    if(!old){
-        throw new apiError(400,"Invalid user")
-    }
-    await deleteOnCloudinary(old);
+    // const a=await User.findById(req.user?._id)
+    // const old=a.avatar.url
+    // if(!old){
+    //     throw new apiError(400,"Invalid user")
+    // }
+    // await deleteOnCloudinary(old);
 
 
 
@@ -409,7 +409,7 @@ const getUserChannelProfile=asyncHandler(async (req,res)=>{
     ))
 })
 
-const getWatcheHistory=asyncHandler(async (req,res)=>{
+const getWatchHistory=asyncHandler(async (req,res)=>{
     const user=await User.aggregate([
         {
             $match:{
@@ -460,6 +460,8 @@ const getWatcheHistory=asyncHandler(async (req,res)=>{
     ))
 })
 
+
+
 export {
     registerUser,
     loginUser,
@@ -473,3 +475,4 @@ export {
     getUserChannelProfile,
     getWatchHistory
 };
+

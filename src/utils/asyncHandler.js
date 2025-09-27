@@ -8,6 +8,12 @@ const asyncHandler=(requestHandler)=>{
 
 export {asyncHandler}
 
+
+
+
+
+
+
 //second type
 // const asyncHandler=(fn)=>async(req,res,next)=>{
 //     try {

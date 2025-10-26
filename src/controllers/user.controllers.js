@@ -108,7 +108,7 @@ const loginUser=asyncHandler(async(req,res)=>{
     })
 
     if(!user){
-        throw new apiError(400,"USer does not exist")
+        throw new apiError(400,"User does not exist")
     }
 
     const isPasswordValid=await user.isPasswordCorrect(password)
@@ -251,7 +251,7 @@ const updateAccountDetail=asyncHandler(async (req,res)=>{
             }
         },
         {new:true}
-    ).select("-password")
+    ).select("-password -refreshToken")
 
     return res.status(200)
     .json(new apiResponse(
@@ -293,7 +293,7 @@ const updateUserAvatar=asyncHandler(async (req,res)=>{
             }
         },
         {new:true}
-    ).select("-password")
+    ).select("-password -refreshToken")
 
 
     return res.status(200)
@@ -327,7 +327,7 @@ const updateUserCoverImage=asyncHandler(async (req,res)=>{
             }
         },
         {new:true}
-    ).select("-password")
+    ).select("-password -refreshToken")
 
     return res.status(200)
     .json(new apiResponse(
